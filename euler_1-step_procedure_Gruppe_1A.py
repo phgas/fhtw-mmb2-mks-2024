@@ -62,8 +62,8 @@ if __name__ == "__main__":
     number_of_steps, time_array, x, x_dot, alpha, alpha_dot = setup_simulation(
         SIMULATION_TIME, STEP_TIME)
     setup_inital_conditions(initial_x=R_KARUSELL,                # Initial displacement (6 meter)
-                            initial_x_dot=0,                     # Initial velocity (0 degrees, horizontal position)
+                            initial_x_dot=0,                     # Initial velocity ()
                             initial_alpha=0,                     # Initial angular displacement (at rest)
-                            initial_alpha_dot=2*np.pi*N_GONDEL)  # Initial angular velocity (90 degrees, horizontal position)
+                            initial_alpha_dot=2*np.pi*N_GONDEL)  # Initial angular velocity ()
     run_simulation()
     plot_results()
