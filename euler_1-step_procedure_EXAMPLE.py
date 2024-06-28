@@ -39,6 +39,6 @@ if __name__ == "__main__":
     number_of_steps, time_array, phi, omega = setup_simulation(
         SIMULATION_TIME, STEP_TIME)
     setup_inital_conditions(initial_phi=np.pi/2,  # Initial angular velocity (at rest)
-                            initial_omega=0)     # Initial angular displacement (90 degrees, horizontal position)
+                            initial_omega=0)      # Initial angular displacement (90 degrees, horizontal position)
     run_simulation()
     plot_results()

@@ -50,7 +50,7 @@ if __name__ == "__main__":
     PHI_0_DEG = 30                         # Angle of tilted carousel [°]
     PHI_0_RAD = math.radians(PHI_0_DEG)    # Angle of tilted carousel [radians]
     R_KARUSELL = 6                         # Radius of carousel [m]
-    C = 888.37                             # Spring stiffness [N/m]
+    C = 10000                              # Spring stiffness [N/m]
     M_GONDEL = 300                         # Mass of gondola [kg]
     N_GONDEL = 0.2333                      # Mass of gondola [radians/second]
     B_GONDEL = 1.5                         # Width of gondola [m]
