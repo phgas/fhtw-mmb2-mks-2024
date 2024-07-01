@@ -25,8 +25,9 @@ def run_simulation():
 
         x[i + 1] = x_dot[i] * STEP_TIME + x[i]
         # is it even correct to only use alpha_dot in second place??
-        x_dot[i + 1] = (x[i] * (alpha_dot[i]**2) - ((C / M_GONDEL) * (x[i] + DELTA_L)) +
-                        G * np.sin(PHI_0_RAD) * np.cos(alpha[i])) * STEP_TIME + x_dot[i]
+        x_dot[i + 1] = (x[i] * (alpha_dot[i]**2) + G * np.sin(PHI_0_RAD) * np.cos(alpha[i]) + ((C * x[i] / M_GONDEL) * 
+                       (((LS**2 + R_KARUSELL**2) / np.sqrt(LS**4 + (LS**2 * R_KARUSELL) + (x[i]**2 * LS**2) + x[i]**2 * R_KARUSELL**2)) 
+                       - 1))) * STEP_TIME + x_dot[i]
 
         # is it even correct to only use alpha_dot and x_dot in second place??
         alpha[i + 1] = alpha_dot[i] * STEP_TIME + alpha[i]
@@ -83,15 +84,15 @@ if __name__ == "__main__":
     PHI_0_DEG = 30                      # Angle of tilted carousel [°]
     PHI_0_RAD = math.radians(PHI_0_DEG) # Angle of tilted carousel [radians]
     R_KARUSELL = 6                      # Radius of carousel [m]
-    C = 10000                           # Spring stiffness [N/m]
+    C = 100000                           # Spring stiffness [N/m]
     M_GONDEL = 300                      # Mass of gondola [kg]
     N_GONDEL = 0.2333                   # Rotational speed of gondola [radians/second]
     B_GONDEL = 1.5                      # Width of gondola [m]
     H_GONDEL = 1.5                      # Height of gondola [m]
-    DELTA_L = 0.005                     # Max length of locking mechanism [m]
+    LS = R_KARUSELL * np.tan(PHI_0_RAD)
 
-    SIMULATION_TIME = 30  # [s]
-    STEP_TIME = 0.001     # [s]
+    SIMULATION_TIME = 10  # [s]
+    STEP_TIME = 0.0001     # [s]
     number_of_steps, time_array, x, x_dot, alpha, alpha_dot = setup_simulation(
         SIMULATION_TIME, STEP_TIME)
     setup_inital_conditions(initial_x=R_KARUSELL,               # Initial displacement (6 meter)

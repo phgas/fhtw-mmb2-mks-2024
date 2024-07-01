@@ -3,7 +3,7 @@ function simulate_system()
     PHI_0_DEG = 30;                      % Angle of tilted carousel [°]
     PHI_0_RAD = deg2rad(PHI_0_DEG);      % Angle of tilted carousel [radians]
     R_KARUSELL = 6;                      % Radius of carousel [m]
-    C = 10000;                           % Spring stiffness [N/m]
+    C = 20000;                           % Spring stiffness [N/m]
     M_GONDEL = 300;                      % Mass of gondola [kg]
     N_GONDEL = 0.2333;                   % Rotational speed of gondola [radians/second]
     B_GONDEL = 1.5;                      % Width of gondola [m]
@@ -54,9 +54,15 @@ function simulate_system()
     han = axes(gcf, 'visible', 'off');
     han.XLabel.Visible = 'on';
     xlabel(han, 'Time (t)', 'FontSize', 14);
+
+    % Get local extremes
+    get_local_extremes(y(:, 1), 'x');
+    get_local_extremes(y(:, 2), 'x\_dot');
+    get_local_extremes(y(:, 3), 'alpha');
+    get_local_extremes(y(:, 4), 'alpha\_dot');
 end
 
-function dydt = odefun(t, y, M_GONDEL, C, G, PHI_0_RAD, DELTA_L, B_GONDEL, H_GONDEL, R_KARUSELL)
+function dydt = odefun(~, y, M_GONDEL, C, G, PHI_0_RAD, DELTA_L, B_GONDEL, H_GONDEL, R_KARUSELL)
     x = y(1);
     x_dot = y(2);
     alpha = y(3);
@@ -66,4 +72,21 @@ function dydt = odefun(t, y, M_GONDEL, C, G, PHI_0_RAD, DELTA_L, B_GONDEL, H_GON
     alpha_ddot = -(2 * x_dot * alpha_dot + G * sin(PHI_0_RAD) * sin(alpha) * x) / (x^2 + (5 / 3) * (B_GONDEL^2 + H_GONDEL^2) + 20 * R_KARUSELL^2);
     
     dydt = [x_dot; x_ddot; alpha_dot; alpha_ddot];
+end
+
+function get_local_extremes(data_series, name)
+    local_maxima = [];
+    local_minima = [];
+
+    for i = 2:length(data_series)-1
+        if data_series(i) > data_series(i-1) && data_series(i) > data_series(i+1)
+            local_maxima = [local_maxima, data_series(i)];
+        end
+        if data_series(i) < data_series(i-1) && data_series(i) < data_series(i+1)
+            local_minima = [local_minima, data_series(i)];
+        end
+    end
+
+    fprintf('Local maxima of %s: %s\n', name, mat2str(local_maxima));
+    fprintf('Local minima of %s: %s\n', name, mat2str(local_minima));
 end

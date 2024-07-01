@@ -15,10 +15,17 @@ def setup_inital_conditions(initial_phi, initial_omega):
     omega[0] = initial_omega
 
 
-def run_simulation():
+def run_explicit_simulation():
     for i in range(0, number_of_steps-1):
         phi[i + 1] = omega[i] * STEP_TIME + phi[i]
         omega[i + 1] = (-G / L * np.sin(phi[i])) * STEP_TIME + omega[i]
+        time_array[i + 1] = (i + 1) * STEP_TIME
+
+
+def run_implicit_simulation():
+    for i in range(0, number_of_steps-1):
+        phi[i + 1] = omega[i + 1] * STEP_TIME + phi[i]
+        omega[i + 1] = (-G / L * np.sin(phi[i + 1])) * STEP_TIME + omega[i]
         time_array[i + 1] = (i + 1) * STEP_TIME
 
 
@@ -40,5 +47,6 @@ if __name__ == "__main__":
         SIMULATION_TIME, STEP_TIME)
     setup_inital_conditions(initial_phi=np.pi/2,  # Initial angular velocity (at rest)
                             initial_omega=0)      # Initial angular displacement (90 degrees, horizontal position)
-    run_simulation()
+    run_implicit_simulation()
+    #run_explicit_simulation()
     plot_results()
