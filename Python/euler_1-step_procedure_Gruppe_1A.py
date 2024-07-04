@@ -64,19 +64,25 @@ def plot_results() -> None:
     plt.show()
 
 
-def get_local_extremes(data_series) -> None:
+def get_local_extremes(data_series):
     local_maxima = []
     local_minima = []
-
     for i in range(1, len(data_series) - 1):
         if data_series[i] > data_series[i - 1] and data_series[i] > data_series[i + 1]:
             local_maxima.append(data_series[i])
         if data_series[i] < data_series[i - 1] and data_series[i] < data_series[i + 1]:
             local_minima.append(data_series[i])
+    return local_minima, local_maxima
 
-    print("Local maxima at indices:", local_maxima)
-    print("Local minima at indices:", local_minima)
 
+def get_global_maxima(local_minima, local_maxima) -> None:
+    global_minima_above_zero = min(local_maxima)
+    global_minima_below_zero = min(local_minima)
+    global_maxima_above_zero = max(local_maxima)
+    global_maxima_below_zero = max(local_minima)
+
+    print(f"Global maxima: {global_minima_above_zero} to {global_maxima_above_zero} | Difference is {global_maxima_above_zero-global_minima_above_zero}")
+    print(f"Global minima: {global_minima_below_zero} to {global_maxima_below_zero} | Difference is {global_maxima_below_zero-global_minima_below_zero}")
 
 
 if __name__ == "__main__":
@@ -84,7 +90,7 @@ if __name__ == "__main__":
     PHI_0_DEG = 30                      # Angle of tilted carousel [°]
     PHI_0_RAD = math.radians(PHI_0_DEG) # Angle of tilted carousel [radians]
     R_KARUSELL = 6                      # Radius of carousel [m]
-    C = 100000                           # Spring stiffness [N/m]
+    C = 60000                           # Spring stiffness [N/m]
     M_GONDEL = 300                      # Mass of gondola [kg]
     N_GONDEL = 0.2333                   # Rotational speed of gondola [radians/second]
     B_GONDEL = 1.5                      # Width of gondola [m]
@@ -102,4 +108,5 @@ if __name__ == "__main__":
     run_simulation()
     plot_results()
 
-    get_local_extremes(x)
+    local_minima, local_maxima = get_local_extremes(x)
+    get_global_maxima(local_minima, local_maxima)
