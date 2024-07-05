@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 def setup_simulation(simulation_time, step_time):
     number_of_steps = int(simulation_time / step_time)
     time_array = np.zeros(number_of_steps)
-    phi = np.zeros(number_of_steps)   # angular displacement in radians
+    phi = np.zeros(number_of_steps)    # angular displacement in radians
     omega = np.zeros(number_of_steps)  # angular velocity in radians/second
     return number_of_steps, time_array, phi, omega
 

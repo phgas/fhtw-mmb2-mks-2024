@@ -104,11 +104,15 @@ def get_global_extremes(local_minima, local_maxima):
         return global_minima, global_maxima, difference
 
     except ValueError:
-
         return None, None, None
 
 
-def find_optimal_C(start, step_size, MAX_RADIAL_DISPLACEMENT, amount_of_results):
+def find_optimal_C(start: int, step_size: int, MAX_RADIAL_DISPLACEMENT: float, amount_of_results: int) -> None:
+    """
+    This function prints the maximum radial displacement in dependcy of C.
+    To avoid unnecessary computing tha starting number can be defined with `start`.
+    """
+    
     global C
     results_counter = 0
 
@@ -143,17 +147,15 @@ if __name__ == "__main__":
     PHI_0_DEG = 30                       # Angle of tilted carousel [°]
     PHI_0_RAD = math.radians(PHI_0_DEG)  # Angle of tilted carousel [radians]
     R_KARUSELL = 6                       # Radius of carousel [m]
-    # C = 150                            # Spring stiffness [N/m]
+    #C = 3_000_000                       # Spring stiffness [N/m]
     M_GONDEL = 300                       # Mass of gondola [kg]
     N_GONDEL = 0.2333                    # Rotational speed of gondola [radians/second]   
     B_GONDEL = 1.5                       # Width of gondola [m]
     H_GONDEL = 1.5                       # Height of gondola [m]
-    LS = R_KARUSELL * np.tan(PHI_0_RAD)
 
-    SIMULATION_TIME = 20                 # [s]
+    SIMULATION_TIME = 10                 # [s]
     MAX_RADIAL_DISPLACEMENT = 0.005      # Maximum radial displacement [m]
-
     initial_conditions = [R_KARUSELL, 0, 0, 2 * np.pi * N_GONDEL]
 
     find_optimal_C(start=0, step_size=100_000,
-                   MAX_RADIAL_DISPLACEMENT=MAX_RADIAL_DISPLACEMENT, amount_of_results=2)
+                   MAX_RADIAL_DISPLACEMENT=MAX_RADIAL_DISPLACEMENT, amount_of_results=1)
