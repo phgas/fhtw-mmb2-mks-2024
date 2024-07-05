@@ -25,16 +25,15 @@ def run_simulation():
 
         x[i + 1] = x_dot[i] * STEP_TIME + x[i]
         # is it even correct to only use alpha_dot in second place??
-        x_dot[i + 1] = (x[i] * (alpha_dot[i]**2) + G * np.sin(PHI_0_RAD) * np.cos(alpha[i]) + ((C * x[i] / M_GONDEL) * 
-                       (((LS**2 + R_KARUSELL**2) / np.sqrt(LS**4 + (LS**2 * R_KARUSELL) + (x[i]**2 * LS**2) + x[i]**2 * R_KARUSELL**2)) 
-                       - 1))) * STEP_TIME + x_dot[i]
+        x_dot[i + 1] = (x[i]  * (alpha_dot[i]**2) + G * np.sin(PHI_0_RAD) *
+                np.cos(alpha[i] ) + ((C / M_GONDEL) * (R_KARUSELL - x[i])))
 
         # is it even correct to only use alpha_dot and x_dot in second place??
         alpha[i + 1] = alpha_dot[i] * STEP_TIME + alpha[i]
 
-        alpha_dot[i + 1] = (-(2 * alpha_dot[i] * x_dot[i] + G * np.sin(PHI_0_RAD) * np.sin(alpha[i]) * x[i]) /
-                             (x[i]**2 + (5/3) * (B_GONDEL**2 + H_GONDEL**2) + 20 * R_KARUSELL**2)) * STEP_TIME + alpha_dot[i]
-
+        alpha_dot[i + 1] = (-(2 * alpha_dot[i] * x_dot[i] * x[i] + G * np.sin(PHI_0_RAD) * np.sin(alpha[i]) * x[i]) /
+                    (x[i]**2 + (5/3) * (B_GONDEL**2 + H_GONDEL**2) + 20 * R_KARUSELL**2))
+        
         time_array[i + 1] = (i + 1) * STEP_TIME
 
 

@@ -7,6 +7,7 @@ import colorama
 
 colorama.init()
 
+
 def system_dynamics(t, y):
     x, x_dot, alpha, alpha_dot = y
     dxdt = x_dot
@@ -121,10 +122,12 @@ def find_optimal_C(start, step_size, MAX_RADIAL_DISPLACEMENT, amount_of_results)
                 print(colored(
                     f"[C: {C:<8} N/m] Global maxima: {global_maxima:<8} | Global minima: {global_minima:<8} | Difference is {difference:<8}", 'green'))
                 results_counter += 1
+                plot_results(time_array, x, x_dot, alpha, alpha_dot)
                 if results_counter >= amount_of_results:
                     break
             elif difference is None:
-                print(colored(f"[C: {C:<8} N/m] no Global minima or maxima found!", 'red'))
+                print(
+                    colored(f"[C: {C:<8} N/m] no Global minima or maxima found!", 'red'))
             else:
                 print(colored(
                     f"[C: {C:<8} N/m] Global maxima: {global_maxima:<8} | Global minima: {global_minima:<8} | Difference is {difference:<8}", 'red'))
@@ -136,23 +139,21 @@ def find_optimal_C(start, step_size, MAX_RADIAL_DISPLACEMENT, amount_of_results)
 
 
 if __name__ == "__main__":
-    G = 9.81                            # Gravity acceleration [m/s^2]
-    PHI_0_DEG = 30                      # Angle of tilted carousel [°]
-    PHI_0_RAD = math.radians(PHI_0_DEG) # Angle of tilted carousel [radians]
-    R_KARUSELL = 6                      # Radius of carousel [m]
+    G = 9.81                             # Gravity acceleration [m/s^2]
+    PHI_0_DEG = 30                       # Angle of tilted carousel [°]
+    PHI_0_RAD = math.radians(PHI_0_DEG)  # Angle of tilted carousel [radians]
+    R_KARUSELL = 6                       # Radius of carousel [m]
     # C = 150                            # Spring stiffness [N/m]
-    M_GONDEL = 300                      # Mass of gondola [kg]
-    # Rotational speed of gondola [radians/second]
-    N_GONDEL = 0.2333
-    B_GONDEL = 1.5                      # Width of gondola [m]
-    H_GONDEL = 1.5                      # Height of gondola [m]
+    M_GONDEL = 300                       # Mass of gondola [kg]
+    N_GONDEL = 0.2333                    # Rotational speed of gondola [radians/second]   
+    B_GONDEL = 1.5                       # Width of gondola [m]
+    H_GONDEL = 1.5                       # Height of gondola [m]
     LS = R_KARUSELL * np.tan(PHI_0_RAD)
 
     SIMULATION_TIME = 20                 # [s]
-    MAX_RADIAL_DISPLACEMENT = 0.005     # Maximum radial displacement [m]
+    MAX_RADIAL_DISPLACEMENT = 0.005      # Maximum radial displacement [m]
 
     initial_conditions = [R_KARUSELL, 0, 0, 2 * np.pi * N_GONDEL]
-
 
     find_optimal_C(start=0, step_size=100_000,
                    MAX_RADIAL_DISPLACEMENT=MAX_RADIAL_DISPLACEMENT, amount_of_results=2)
