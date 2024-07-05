@@ -107,12 +107,23 @@ def get_global_extremes(local_minima, local_maxima):
         return None, None, None
 
 
-def find_optimal_C(start: int, step_size: int, MAX_RADIAL_DISPLACEMENT: float, amount_of_results: int) -> None:
+def find_optimal_C(start: int, step_size: int, MAX_RADIAL_DISPLACEMENT: float, amount_of_results: int, show_results: bool) -> None:
     """
-    This function prints the maximum radial displacement in dependcy of C.
-    To avoid unnecessary computing tha starting number can be defined with `start`.
+    This function finds and prints the optimal values of C (stiffness constant) that result in a radial displacement
+    less than or equal to a specified maximum value. The search starts from a given initial value and increments by a 
+    specified step size. It stops when a specified number of valid results are found.
+
+    Parameters:
+    - start (int): The initial value of C to start the search from.
+    - step_size (int): The step size to increment C in each iteration.
+    - MAX_RADIAL_DISPLACEMENT (float): The maximum allowable radial displacement.
+    - amount_of_results (int): The number of valid results to find before stopping the search.
+    - show_results (bool): If True, plots the results using the plot_results function.
+
+    Returns:
+    - None
     """
-    
+
     global C
     results_counter = 0
 
@@ -126,7 +137,8 @@ def find_optimal_C(start: int, step_size: int, MAX_RADIAL_DISPLACEMENT: float, a
                 print(colored(
                     f"[C: {C:<8} N/m] Global maxima: {global_maxima:<8} | Global minima: {global_minima:<8} | Difference is {difference:<8}", 'green'))
                 results_counter += 1
-                plot_results(time_array, x, x_dot, alpha, alpha_dot)
+                if show_results:
+                    plot_results(time_array, x, x_dot, alpha, alpha_dot)
                 if results_counter >= amount_of_results:
                     break
             elif difference is None:
@@ -157,5 +169,10 @@ if __name__ == "__main__":
     MAX_RADIAL_DISPLACEMENT = 0.005      # Maximum radial displacement [m]
     initial_conditions = [R_KARUSELL, 0, 0, 2 * np.pi * N_GONDEL]
 
-    find_optimal_C(start=0, step_size=100_000,
-                   MAX_RADIAL_DISPLACEMENT=MAX_RADIAL_DISPLACEMENT, amount_of_results=1)
+    find_optimal_C(
+        start=0, 
+        step_size=100_000,
+        MAX_RADIAL_DISPLACEMENT=MAX_RADIAL_DISPLACEMENT,
+        amount_of_results=1,
+        show_results=True
+    )
